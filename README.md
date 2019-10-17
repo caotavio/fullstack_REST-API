@@ -5,9 +5,7 @@
  Usage:
  <br>
  Download the files, open the terminal and:
- ```
- cd/api... then run:
- ```
+
  ```
  npm install
  npm run seed (to initialize the database with data)
