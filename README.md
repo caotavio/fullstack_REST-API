@@ -1,32 +1,27 @@
+# Fullstack App
 
-# Full Stack JavaScript Techdegree - REST API Project
+ A react client-side app that consumes a node/express REST API and performs all CRUD operations persisting them in a database.
 
-## Overview
+ Usage:
+ <br>
+ Download the files, open the terminal and navigate to...
 
-* This project delivers a REST API for managing a school database. It creates users, gets authenticated users information and performs all CRUD operations on the courses list, with error handling and authorization. 
-* The `RESTAPI.postman_collection.json` file is a collection of Postman requests that you can use to test and explore the REST API.
+ ### The api directory:
 
-## Getting Started
-
-To get up and running with this project, run the following commands from the root of the folder that contains this README file.
-
-First, install the project's dependencies using `npm`.
-
-```
-npm install
-
-```
-
-Second, seed the SQLite database.
-
-```
-npm run seed
-```
-
-And lastly, start the application.
-
-```
-npm start
-```
-
-To test the Express server, browse to the URL [http://localhost:5000/](http://localhost:5000/).
+ ```
+ cd/api... then run:
+ ```
+ ```
+ npm install
+ npm run seed (to initialize the database with data)
+ npm start (this will work on localhost:5000)
+ ```
+ 
+ ### The client directory:
+ ```
+ cd/client... then run
+ ```
+ ```
+ npm install
+ npm start (this will work on localhost:3000)
+ ```

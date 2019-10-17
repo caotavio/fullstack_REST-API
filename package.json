@@ -4,8 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon ./app.js",
-    "seed": "cross-env DB_ENABLE_LOGGING=true node './seed'"
+    "start": "node app.js"
   },
   "keywords": [],
   "author": "",
@@ -16,12 +15,19 @@
   "dependencies": {
     "basic-auth": "^2.0.1",
     "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
     "cross-env": "^5.2.0",
     "express": "^4.16.3",
     "morgan": "^1.9.0",
+    "pg": "^7.12.1",
     "promise.prototype.finally": "^3.1.0",
     "sequelize": "^5.15.1",
     "sequelize-cli": "^5.5.0",
     "sqlite3": "^4.0.9"
+  },
+  "proxy": "http://localhost:5000",
+  "engines": {
+    "node": "12.4.0",
+    "npm": "6.9.0"
   }
 }

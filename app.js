@@ -11,12 +11,21 @@ const enableGlobalErrorLogging = process.env.ENABLE_GLOBAL_ERROR_LOGGING === 'tr
 // create the Express app
 const app = express();
 
+const cors = require('cors');
+
+// needed for deployment
+const path = require("path")
+
 // setup morgan which gives us http request logging
 app.use(morgan('dev'));
+
+//Enables all Cross-origin resource sharing (CORS) requests for access from one origin(api) to another(client)
+app.use(cors());
 
 // API routes setup
 app.use("/api/users", require("./routes/users"));
 app.use("/api/courses", require("./routes/courses"));
+app.use(express.static(path.join(__dirname, "client", "build"))) // needed for deployment
 
 //default/'Home Page' route handler
 app.get('/api', (req, res) => {
@@ -38,6 +47,10 @@ app.use((err, req, res, next) => {
     message: err.message,
     error: {},
   });
+});
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client", "build", "index.html"));
 });
 
 // set our port

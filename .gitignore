@@ -62,3 +62,7 @@ typings/
 
 # SQLite database file
 *.db
+
+# misc
+markup/
+mockups/

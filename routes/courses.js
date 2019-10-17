@@ -14,7 +14,6 @@ const asyncHandler = cb => {
       try {
         await cb(req, res, next);
       } catch(err) {
-        console.log('There was an error with the application');
         next(err);
       }
     }
@@ -42,43 +41,79 @@ router.get('/', asyncHandler(async (req, res) => {
   
 //GET - 'api/courses/:id' - returns the courses including the users that "own" the course for the provided course id
 router.get('/:id', asyncHandler(async (req, res) => {
-    const course = await Course.findByPk(
-      req.params.id,
-      {
+  const course = await Course.findByPk(
+    req.params.id,
+    {
       where: {
         id: req.params.id,
       },
-      attributes: {
-        exclude: ['createdAt', 'updatedAt'],
-      },
-      include: [
-        {
-          model: User,
-          as: 'user',
-          attributes: {
-            exclude: ['password', 'createdAt', 'updatedAt'],
-          },
+    attributes: {
+      exclude: ['createdAt', 'updatedAt'],
+    },
+    include: [
+      {
+        model: User,
+        as: 'user',
+        attributes: {
+          exclude: ['password', 'createdAt', 'updatedAt'],
         },
-      ],
-      });
-      if (course) {
-      res.json(course);
-      } else {
-        res.json({ error: 'Course not found' })
-      }
+      },
+    ],
+  });
+
+  if (course) {
+    res.json(course);
+  } else {
+    // res.json({ error: 'Course not found' })
+    res.status(404).json();
+  }
 }));
   
 //POST - 'api/courses' - creates a course, sets the location header to the URI for the course. Returns no content
 router.post('/', authenticateUser, asyncHandler(async (req, res) => {
-      const newCourse = await Course.create(req.body);
-      res.location(`/courses/${newCourse.id}`);
-      res.status(201).end();
+  let error = new Array();
+  let message = null;
+
+  if (! req.body.title){
+    message = `Please include title.`;
+    error.push(message);
+  }
+
+  if (! req.body.description ){
+    message = `Please include description.`;
+    error.push(message);
+  }
+
+  if (error.length > 0) {
+    res.status(422).json({ errors: error });
+  }
+
+  const newCourse = await Course.create(req.body);
+  res.location(`/courses/${newCourse.id}`);
+  res.status(201).end();
 }));
   
 //PUT - '/api/courses/:id' - Checks if the particular user owns the course first and then updates it. Returns no content
 router.put('/:id', authenticateUser, asyncHandler(async (req, res, next) => {
     let course = await Course.findByPk(req.params.id);
     if(course.userId === req.body.userId) {
+      let error = Array();
+      let message = null;
+
+      if (! req.body.title){
+        message = `Please include title.`;
+        error.push(message);
+      }
+
+      if (! req.body.description ){
+        message = `Please include description.`;
+        error.push(message);
+      }
+
+      if (error.length > 0) {
+        res.status(422).json({ errors: error });
+      }
+      
       course.title = req.body.title;
       course.description = req.body.description;
       course.estimatedTime = req.body.estimatedTime;
